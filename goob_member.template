@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    title = title
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    link rel='stylesheet' href='/css/skeleton.css' type='text/css'
+    link rel='stylesheet' href='/css/characters.css' type='text/css'
+    link rel="icon" type="image/png" href="/images/favicon.png"
+
+  body
+    #container.container
+      .row
+        #side.four.columns
+          img#portrait.fade src=portrait
+          br
+          .side-header Favorite Jobs
+          #job-frame
+            img src=job_1 alt=""
+            img src=job_2 alt=""
+            img src=job_3 alt=""
+            img src=job_4 alt=""
+            img src=job_5 alt=""
+          .sideheader Saying
+          p[style="font-style: italic"]
+            =saying
+
+        #text.eight.columns
+          h1 =name
+          == content
+          .album-frame.fade
+            img.album-photo src=photo_1 alt=""
+          .album-frame.fade
+            img.album-photo src=photo_2 alt=""
+          .album-frame.fade
+            img.album-photo src=photo_3 alt=""
+          .album-frame.fade
+            img.album-photo src=photo_4 alt=""
+          .album-frame.fade
+            img.album-photo src=photo_5 alt=""
+
+    #footer
+      | Jolly Goobues

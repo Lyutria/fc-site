@@ -1,0 +1,117 @@
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: "Open Sans", "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  background-image: url("/images/backgrounds/dust.png");
+  background-repeat: repeat;
+}
+
+@keyframes fade-in {
+	0%   {opacity: 0;}
+	40%  {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+.fade {
+	animation-name: fade-in;
+	animation-timing-function: ease-out;
+	animation-duration: 5s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+#side {
+	text-align: center;
+	border-right: 1px solid #E1E1E1;
+}
+
+#portrait {
+	cursor: pointer;
+
+	max-height: 400px;
+	height:     400px;
+	box-shadow: 0 15px 20px -18px black;
+
+	padding-left:  auto;
+	padding-right: auto;
+
+	padding-top:   7px;
+	margin-bottom: 20px;
+	transition: padding-top 0.2s, margin-bottom 0.2s;
+}
+
+#portrait:hover {
+	padding-top:   0px;
+	margin-bottom: 27px;
+	transition: padding-top 0.2s, margin-bottom 0.2s;
+}
+
+.side-header {
+	color: #804000;
+	font-weight: bold;
+	text-align:  center;
+}
+
+#job-frame > img {
+	width:  48px;
+	height: 48px;
+}
+
+#text {
+	/*padding-top: 7px;*/
+}
+
+h1, h2, h3, h4 {
+	text-align: center;
+}
+
+.album-frame {
+  display: block;
+  border: 36px solid transparent;
+  margin-bottom: 20px;
+  border-image: url("/images/photo-border.png") 66 round;
+
+
+  transition: border-width 0.2s, margin 0.2s, padding 0.2s;
+  box-shadow: 0px 5px 10px 0px #ccc;
+}
+
+.album-frame:hover {
+  border: 0px solid transparent;
+  margin-bottom: 51px;
+  border-image: url("http://goob-moe-dev.pancakeapps.com/images/photo-border.png") 66 round;
+
+  -webkit-filter: grayscale(0%);
+  -moz-filter:    grayscale(0%);
+
+  transition: border-width 0.2s, margin 0.2s, padding 0.2s;
+  box-shadow: 0px 5px 10px 0px #ccc;
+}
+
+.album-frame:hover > .album-photo {
+	-webkit-filter: grayscale(0%);
+	-moz-filter:    grayscale(0%);
+	transition: -webkit-filter 0.2s, -moz-filter 0.2s;
+}
+
+.album-photo {
+	width: 100%;
+
+	-webkit-filter: grayscale(100%);
+	-moz-filter:    grayscale(100%);
+	transition: -webkit-filter 0.2s, -moz-filter 0.2s;
+}
+
+#footer {
+    position: fixed;
+ 	left:    15px;
+	bottom: -10px;
+	opacity: 0.5;
+	font-style: italic;
+}
+
+#container {
+	padding-top: 50px;
+}

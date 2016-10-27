@@ -4,7 +4,7 @@ body {
   font-weight: 400;
   font-family: "Open Sans", "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  background-image: url("/images/backgrounds/natural_paper_1.png");
+  background-image: url("/images/backgrounds/dust.png");
   background-repeat: repeat;
 }
 
@@ -22,7 +22,7 @@ body,
   position: relative;
 }
 
-#message {
+#content {
 	display: table-cell;
 	text-align: center;
 	vertical-align: middle;
@@ -58,7 +58,6 @@ body,
 
 #postcard {
 	cursor: pointer;
-
 	padding-top: 7px;
 	transition: padding-top 0.2s;
 }
@@ -87,11 +86,16 @@ body,
 	animation-fill-mode: forwards;
 	padding-top: 0px;
 	transition:  padding-top 0.2s;
+	line-height: 1;
+}
+
+h4 {
+	font-size:  2.3rem !important;
 }
 
 .emphasis {
 	font-style: italic;
-	font-size: 80%;
+	font-size:  2.1rem;
 }
 
 #player {
@@ -108,10 +112,10 @@ body,
 }
 
 #footer {
-    position: absolute;
- 	left:   20px;
-	bottom: 0px;
+    position: fixed;
+ 	left:   15px;
+	bottom: -10px;
 	opacity: 0.5;
-	font-size: 60%;
 	font-style: italic;
+	line-height: 1;
 }
