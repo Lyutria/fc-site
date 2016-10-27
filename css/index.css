@@ -1,0 +1,117 @@
+body {
+  font-size: 1.5em;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: "Open Sans", "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  background-image: url("/images/backgrounds/natural_paper_1.png");
+  background-repeat: repeat;
+}
+
+html,
+body,
+#wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#wrapper {
+  display: table;
+  position: relative;
+}
+
+#message {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+@keyframes postcard-fade {
+	0%   {opacity: 0; height: 0px;}
+	33%  {opacity: 0; height: 0px;}
+	66%  {opacity: 0; height: 606px;}
+	100% {opacity: 1; height: 606px;}
+}
+
+.fade-intro {
+	animation-name: postcard-fade;
+	animation-duration: 10s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+@keyframes postcard-flip {
+	0%   {width: 919px; height: 606px;}
+	50%  {width: 0px;   height: 606px;}
+	100% {width: 919px; height: 606px;}
+}
+
+.flip {
+	animation-name: postcard-flip;
+	animation-duration: 2s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	padding-top: 7px !important;
+}
+
+#postcard {
+	cursor: pointer;
+
+	padding-top: 7px;
+	transition: padding-top 0.2s;
+}
+
+#postcard:hover + #postcard-text {
+	padding-top: 7px;
+	transition: padding-top 0.2s;
+}
+
+#postcard:hover {
+	padding-top: 0px;
+	transition: padding-top 0.2s;
+}
+
+@keyframes postcard-text-fade {
+	0%   {opacity: 0;}
+	50%  {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+#postcard-text {
+	opacity: 0;
+	animation-name: postcard-text-fade;
+	animation-duration: 3s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	padding-top: 0px;
+	transition:  padding-top 0.2s;
+}
+
+.emphasis {
+	font-style: italic;
+	font-size: 80%;
+}
+
+#player {
+    position: absolute;
+ 	right:  10px;
+	bottom: 5px;
+	opacity: 0.25;
+	transition: opacity 0.5s;
+}
+
+#player:hover {
+	opacity: 1;
+	transition: opacity 0.5s;
+}
+
+#footer {
+    position: absolute;
+ 	left:   20px;
+	bottom: 0px;
+	opacity: 0.5;
+	font-size: 60%;
+	font-style: italic;
+}

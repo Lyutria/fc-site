@@ -1,0 +1,46 @@
+<head>
+	<title>Jolly Goobues</title>
+	<link rel='stylesheet' href='/css/index.css' type='text/css'>
+	<link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+
+<body>
+	<div id="wrapper">
+	<div id="message">
+		<img id="postcard" class="fade-intro" src="/images/goob-front.png">
+		<p   id="postcard-text">
+			Goobers. </br>
+			<span class="emphasis">
+				Mist - Ward 3, Plot 22
+			</span>
+		</p>
+	</div>
+	</div>
+
+	<div id="footer">
+		<p>FFXIV - A Gilgamesh Free Company</p>
+	</div>
+
+	<audio controls id="player">
+		  <source src="https://dl.dropboxusercontent.com/u/117694669/Web/dts.mp3" type="audio/mpeg">
+	</audio>
+</body>
+
+<script>
+var volume = parseFloat(document.cookie);
+if (isNaN(volume)) { volume = 0.25; }
+document.getElementById("player").volume = volume;
+
+window.setTimeout(function() {
+	document.getElementById("player").play();
+}, 6000);
+
+
+document.getElementById("player").onvolumechange = function() {
+	document.cookie = document.getElementById("player").volume.toString();
+};
+
+document.getElementById("postcard").onmouseup = function() {
+	window.location.assign("http://na.finalfantasyxiv.com/lodestone/freecompany/9232238498621192510/");
+};
+</script>
