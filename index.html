@@ -1,48 +1,159 @@
+<!DOCTYPE html>
+<script src='vendor/three.js/build/three.min.js'></script>
+<script src='vendor/require.js/require.js'></script>
+<!-- include three.js postprocessing  -->
+<script src="vendor/three.js/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="vendor/three.js/examples/js/postprocessing/RenderPass.js"></script>
+<script src="vendor/three.js/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="vendor/three.js/examples/js/postprocessing/MaskPass.js"></script> 
+<script src="vendor/three.js/examples/js/shaders/CopyShader.js"></script>
+
 <head>
-	<title>Sullen Goobues</title>
-	<link rel='stylesheet' href='/css/index.css' type='text/css'>
-    <link rel='stylesheet' href='/css/skeleton.css' type='text/css'>
-	<link rel="icon" type="image/png" href="/images/favicon.png">
+	<title>VCR</title>
+	<link rel='stylesheet' type='text/css'  href='index.css' >
+    <link rel="icon"       type="image/png" href="/img/favicon.png">
 </head>
 
-<body>
-	<div id="wrapper">
-	<div id="content">
-		<img id="postcard" class="fade-intro" src="images/goob-front.png">
-		<p   id="postcard-text">
-			<h4>Goobers.<br>
-			<span class="emphasis">
-				Lavender Beds - Ward 2, Plot 11
-			</span>
-			</h4>
-		</p>
+<body style='margin: 0px; background-color: #000; overflow: hidden;'>
+	<div class="header">
+	<div class="headerplay">
+		<span class="playbutton" onclick="playMusic();">play</span>
+	</div>
+	<div class="headertext">
+		<span id="saying" class="saying">all that live must die</span>
 	</div>
 	</div>
 
-	<div id="footer">
-		<p>Sullen Goobues - A Gilgamesh Free Company</p>
-	</div>
-
-	<audio controls id="player">
-		  <source src="https://dl.dropboxusercontent.com/u/117694669/Web/dts.mp3" type="audio/mpeg">
+	<audio loop id="player">
+		  <source src="https://dl.dropboxusercontent.com/u/117694669/Web/resonance.mp3" type="audio/mpeg">
 	</audio>
-</body>
+
+	<div id="tvcontainer"></div>
+
+	<div class="footer">
+		<div class="footertext">- N &amp; C</div>
+	</div>
 
 <script>
-var volume = parseFloat(document.cookie);
-if (isNaN(volume)) { volume = 0.25; }
-document.getElementById("player").volume = volume;
+require(['package.require.js'], init);
 
-window.setTimeout(function() {
-	document.getElementById("player").play();
-}, 6000);
+// Constants
+imgAmount = 5;
 
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-document.getElementById("player").onvolumechange = function() {
-	document.cookie = document.getElementById("player").volume.toString();
-};
+function init() {
+	THREE.ImageUtils.crossOrigin = "";
+	var renderer	= new THREE.WebGLRenderer();
+	var aspect = 1080/1920;
+	renderer.setSize(window.innerWidth, window.innerWidth * aspect);
+	document.getElementById("tvcontainer").appendChild( renderer.domElement ).id = "tv";
 
-document.getElementById("postcard").onmouseup = function() {
-	window.location.assign("http://na.finalfantasyxiv.com/lodestone/freecompany/9232238498621163568/");
-};
+	var onRenderFcts= [];
+	var scene	= new THREE.Scene();
+	var camera	= new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 )
+	camera.position.z = 3;
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object and make it move					//
+	//////////////////////////////////////////////////////////////////////////////////
+	var imgChoice = "img" + getRandomIntInclusive(1, imgAmount) + ".png";
+	var texture	= THREE.ImageUtils.loadTexture("img/" + imgChoice);
+
+	var geometry	= new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
+	var material	= new THREE.MeshBasicMaterial( { map : texture} );
+	var mesh = new THREE.Mesh( geometry, material );
+	scene.add( mesh )
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		badTVPasses							//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var badTVPasses	= new THREEx.BadTVPasses();
+
+	onRenderFcts.push(function(delta, now){
+		badTVPasses.update(delta, now)		
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		ping animation + sounds						//
+	//////////////////////////////////////////////////////////////////////////////////
+	window.AudioContext	= window.AudioContext || window.webkitAudioContext;
+	var context		    = new AudioContext()
+	var badTVJamming	= new THREEx.BadTVJamming(badTVPasses, context)
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		composer 							//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var composer	= new THREE.EffectComposer(renderer);
+	var renderPass	= new THREE.RenderPass( scene, camera );
+	composer.addPass( renderPass );
+
+	badTVPasses.addPassesTo(composer)
+	composer.passes[composer.passes.length -1 ].renderToScreen	= true;
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the scene						//
+	//////////////////////////////////////////////////////////////////////////////////
+	onRenderFcts.push(function(delta, now){
+		// disable rendering directly thru renderer 
+		// renderer.render( scene, camera )
+		composer.render(delta)
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		loop runner							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		requestAnimationFrame( animate );
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+
+	window.addEventListener('resize', onResize, false);
+	document.getElementById("tv").addEventListener('click', onTvClick, false);
+
+	function onResize() {
+		renderer.setSize(window.innerWidth, window.innerWidth * aspect);
+		camera.updateProjectionMatrix();
+	}
+
+	function onTvClick() {
+		var newImgChoice;
+		
+		do {
+			newImgChoice = "img" + getRandomIntInclusive(1, imgAmount) + ".png";
+		}
+		while (newImgChoice == imgChoice);
+		imgChoice = newImgChoice;
+
+		var newTexture	= THREE.ImageUtils.loadTexture("img/" + imgChoice);
+		mesh.material.map = newTexture;
+	}
+}
+
+var musicPlaying = false;
+function playMusic() {
+	if (musicPlaying == false) {
+		document.getElementById("player").volume = 0.5;
+		document.getElementById("player").play();
+		musicPlaying = true;
+	}
+	else {
+		document.getElementById("player").pause();
+		musicPlaying = false;
+	}
+}
 </script>
+</body>
